@@ -1,0 +1,36 @@
+GPU available: False, used: False
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+Training the model...
+Epoch 1:  18%|█▊        | 3/17 [00:00<00:00, 28.57it/s, v_num=gzp2]
+  | Name  | Type       | Params
+-------------------------------------
+0 | loss  | MSELoss    | 0
+1 | model | Sequential | 1.8 M
+-------------------------------------
+1.8 M     Trainable params
+0         Non-trainable params
+1.8 M     Total params
+7.279     Total estimated model params size (MB)
+C:\Users\valer\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\pytorch_lightning\trainer\connectors\data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=11` in the `DataLoader` to improve performance.
+Epoch 3: 100%|██████████| 17/17 [00:00<00:00, 23.64it/s, v_num=gzp2]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Epoch 51:  71%|███████   | 12/17 [00:00<00:00, 24.90it/s, v_num=gzp2]
+
+Epoch 51:  94%|█████████▍| 16/17 [00:00<00:00, 25.36it/s, v_num=gzp2]

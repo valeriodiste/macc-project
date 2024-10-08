@@ -60,6 +60,9 @@ class ModelData(pl.LightningDataModule):
 			for i in range(len(measurement_sensors_data)):
 				single_measurement_sensors_data = measurement_sensors_data[i]
 				single_calibration_sensor_data = calibration_sensor_data[i]
+				# Merge the measurement and calibration data
+				print (single_measurement_sensors_data)
+				print (single_calibration_sensor_data)
 				# Convert the measurements to tensors
 				measurement_tensor = self.format_measurements(single_measurement_sensors_data+single_calibration_sensor_data, measurement_types, normalize_sensor_data, normalization_range)
 				data_object.extend(measurement_tensor)

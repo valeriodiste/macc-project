@@ -90,12 +90,19 @@ model.eval()
 #Route to perform predictions
 @app.route('/predict', methods=['POST'])
 def predict():
-	# Get the data
-	data = request.json
-	# Data will contain a list of flattened measurements
-	input_data = ModelData.format_measurements(data, MEASUREMENTS, NORMALIZE_SENSOR_DATA, NORMALIZATION_RANGE)
-	input_data = torch.tensor(input_data, dtype=torch.float32).to(device)
-	# Perform the prediction
-	weight = model.predict(input_data)
-	# Return the prediction
-	return jsonify({"weight": weight})
+	test = True
+	if test:
+		#Wait for some seconds then return a random weight
+		import time
+		time.sleep(1)
+		return jsonify({"weight": random.randint(0, 1000)})
+	else:
+		# Get the data
+		data = request.json
+		# Data will contain a list of flattened measurements
+		input_data = ModelData.format_measurements(data, MEASUREMENTS, NORMALIZE_SENSOR_DATA, NORMALIZATION_RANGE)
+		input_data = torch.tensor(input_data, dtype=torch.float32).to(device)
+		# Perform the prediction
+		weight = model.predict(input_data)
+		# Return the prediction
+		return jsonify({"weight": weight})

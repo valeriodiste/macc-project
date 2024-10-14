@@ -8,9 +8,10 @@ from torch import nn
 from flask import Flask, request, jsonify
 # Custom libraries
 from fnn import FNN, ModelData
+
 # General parameters
-REFRESH_DATA = True
-WANDB_API_KEY = "2ba6d81dbfe138d5c7fe13aeeeaac296cb88d274"
+# REFRESH_DATA = True
+# WANDB_API_KEY = "2ba6d81dbfe138d5c7fe13aeeeaac296cb88d274"
 
 # Model data parameters
 NORMALIZE_SENSOR_DATA = True

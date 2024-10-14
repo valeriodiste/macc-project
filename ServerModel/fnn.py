@@ -249,7 +249,9 @@ class FNN(pl.LightningModule):
 				"ReLU": nn.ReLU(),
 				"LeakyReLU": nn.LeakyReLU(),
 				"Tanh": nn.Tanh(),
-				"Sigmoid": nn.Sigmoid()
+				"Sigmoid": nn.Sigmoid(),
+				"Softmax": nn.Softmax(dim=1),
+				"Linear": nn.Identity()
 			}[self.activation_fn])
 		self.layers.append(nn.Dropout(p=dropout))
 		for _ in range(self.hidden_layers):

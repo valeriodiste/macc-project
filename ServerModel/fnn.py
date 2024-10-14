@@ -273,8 +273,8 @@ class FNN(pl.LightningModule):
 		self.test_losses = []
 		self.test_accuracies = []
 
-	# def forward(self, x): 
-	# 	return self.model(x)
+	def forward(self, x): 
+		return self.model(x)
 
 	def configure_optimizers(self): 
 		# Define the optimizer
@@ -377,7 +377,8 @@ class FNN(pl.LightningModule):
 		# Set the model to evaluation mode if needed
 		self.model.eval()
 		# Forward pass
-		output = self.model(data)
+		with torch.no_grad():
+			output = self.model(data)
 		# Get the weight
 		weight = ModelData.get_weight(output, self.normalize_data, self.normalization_range, self.max_weight)
-		return weight
+		return weight, output

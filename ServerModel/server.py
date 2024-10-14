@@ -87,20 +87,30 @@ if os.path.exists(model_path):
 # Set the model to evaluation mode
 model.eval()
 
+# CORS headers
+@app.after_request
+def after_request(response):
+	response.headers.add('Access-Control-Allow-Origin', '*')
+	response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+	response.headers.add('Access-Control-Allow-Methods', 'GET,POST')
+	return response
+
 #Route to perform predictions
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['GET', 'POST'])
 def predict():
 	test = True
 	if test:
-		#Wait for some seconds then return a random weight
+		# Wait for some seconds then return a random weight
 		import time
 		time.sleep(1)
-		return jsonify({"weight": random.randint(0, 1000)})
+		return jsonify({"weight": 14})
 	else:
-		# Get the data
-		data = request.json
+		# Get the data (data is sent through a GET request as a JSON object request with a certain JSON body, containing the sensor data)
+		data = request.get_json()
+		# Extract the measurements from the data
+		measurements = data["sensor_data"]
 		# Data will contain a list of flattened measurements
-		input_data = ModelData.format_measurements(data, MEASUREMENTS, NORMALIZE_SENSOR_DATA, NORMALIZATION_RANGE)
+		input_data = ModelData.format_measurements(measurements, MEASUREMENTS, NORMALIZE_SENSOR_DATA, NORMALIZATION_RANGE)
 		input_data = torch.tensor(input_data, dtype=torch.float32).to(device)
 		# Perform the prediction
 		weight = model.predict(input_data)

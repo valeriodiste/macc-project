@@ -182,7 +182,7 @@ class FNN(pl.LightningModule):
 			hidden_dim: int = 128,
 			hidden_layers: int = 2,
 			output_dim: int = 10,
-			activation_fn = "ReLU",
+			activation_functions = "ReLU",
 			dropout: float = 0.5,
 			optimizer = "Adam",
 			lr: float = 0.01,
@@ -204,7 +204,7 @@ class FNN(pl.LightningModule):
 		self.hidden_dim = hidden_dim
 		self.hidden_layers = hidden_layers
 		self.output_dim = output_dim
-		self.activation_fn = activation_fn
+		self.activation_fn = activation_functions
 		self.dropout = dropout
 		self.optimizer = optimizer
 		self.lr = lr
@@ -245,23 +245,19 @@ class FNN(pl.LightningModule):
 		# Define the model architecture
 		self.layers = []
 		self.layers.append(nn.Linear(self.input_dim, self.hidden_dim, dtype=torch.float64))
-		self.layers.append({
-				"ReLU": nn.ReLU(),
-				"LeakyReLU": nn.LeakyReLU(),
-				"Tanh": nn.Tanh(),
-				"Sigmoid": nn.Sigmoid(),
-				"Softmax": nn.Softmax(dim=1),
-				"Linear": nn.Identity()
-			}[self.activation_fn])
+		activation_functions = {
+			"ReLU": nn.ReLU(),
+			"LeakyReLU": nn.LeakyReLU(),
+			"Tanh": nn.Tanh(),
+			"Sigmoid": nn.Sigmoid(),
+			"Softmax": nn.Softmax(dim=1),
+			"Linear": nn.Identity()
+		}
+		self.layers.append(activation_functions[self.activation_fn])
 		self.layers.append(nn.Dropout(p=dropout))
 		for _ in range(self.hidden_layers):
 			self.layers.append(nn.Linear(self.hidden_dim, self.hidden_dim, dtype=torch.float64))
-			self.layers.append({
-				"ReLU": nn.ReLU(),
-				"LeakyReLU": nn.LeakyReLU(),
-				"Tanh": nn.Tanh(),
-				"Sigmoid": nn.Sigmoid()
-			}[self.activation_fn])
+			self.layers.append(activation_functions[self.activation_fn])
 			self.layers.append(nn.Dropout(p=dropout))
 		self.layers.append(nn.Linear(self.hidden_dim, self.output_dim, dtype=torch.float64))
 		self.model = nn.Sequential(*self.layers)

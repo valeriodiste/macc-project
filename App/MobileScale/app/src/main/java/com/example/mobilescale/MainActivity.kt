@@ -1,5 +1,6 @@
 package com.example.mobilescale
 
+// General libraries
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -39,7 +40,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContextCompat
-//import com.example.mobilescale.ui.theme.MobileScaleTheme
 import java.io.File
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
@@ -50,39 +50,8 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.content.Context
 import android.media.MediaPlayer
-
-// Import Volley library
-import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
-import com.android.volley.NetworkResponse
-import com.android.volley.toolbox.HttpHeaderParser
-import java.io.ByteArrayOutputStream
-import java.io.DataOutputStream
-import java.io.IOException
-import java.nio.charset.Charset
-
-// Camera
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.view.PreviewView
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.LifecycleOwner
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import android.util.Base64
-import androidx.camera.core.resolutionselector.AspectRatioStrategy
-import androidx.camera.core.resolutionselector.ResolutionSelector
-import androidx.camera.core.resolutionselector.ResolutionStrategy
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.absoluteOffset
@@ -107,22 +76,55 @@ import androidx.compose.ui.zIndex
 import kotlinx.coroutines.delay
 import java.math.RoundingMode
 import kotlin.math.abs
-
-// Volume
-import android.content.BroadcastReceiver
-import android.content.Intent
-import android.content.IntentFilter
-import android.media.AudioManager
 import android.util.Size
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-//import androidx.compose.foundation.layout.FlowRowScopeInstance.weight
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.ui.unit.TextUnit
 import org.json.JSONException
 import kotlin.math.round
+
+// Import Volley library
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import com.android.volley.NetworkResponse
+import com.android.volley.toolbox.HttpHeaderParser
+import java.io.ByteArrayOutputStream
+import java.io.DataOutputStream
+import java.io.IOException
+import java.nio.charset.Charset
+
+
+// Camera
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.LifecycleOwner
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import android.util.Base64
+import androidx.camera.core.resolutionselector.AspectRatioStrategy
+import androidx.camera.core.resolutionselector.ResolutionSelector
+import androidx.camera.core.resolutionselector.ResolutionStrategy
+
+
+// Volume
+import android.content.BroadcastReceiver
+import android.content.Intent
+import android.content.IntentFilter
+import android.media.AudioManager
+
 
 // List of measurements kept while the application is running
 val sensorDataMeasurementsMemory = 10
@@ -459,11 +461,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 					)
 				)
 			}
-			//Sensor.TYPE_AMBIENT_TEMPERATURE -> {
-			//	sensorData = sensorData.copy(
-			//		ambientTemperature = event.values[0].toDouble()
-			//	)
-			//}
 			Sensor.TYPE_GRAVITY -> {
 				sensorData = sensorData.copy(
 					gravity = Triple(
@@ -491,11 +488,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 					)
 				)
 			}
-			//Sensor.TYPE_PRESSURE -> {
-			//	sensorData = sensorData.copy(
-			//		pressure = event.values[0].toDouble()
-			//	)
-			//}
 			Sensor.TYPE_ROTATION_VECTOR -> {
 				sensorData = sensorData.copy(
 					rotationVector = Triple(
@@ -725,8 +717,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 					)
 					val scatterPlotSize = 300.dp
 					val pointsSize = 3.dp
-					//val range = 10.0
-					//val range = 3.0
 					Card (
 						modifier = Modifier
 							.size(scatterPlotSize),
@@ -739,8 +729,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 						Scatterplot(
 							pointsArray = measurementsArray,
 							size = scatterPlotSize,
-							//xRange = -range..range,
-							//yRange = -range..range,
 							pointSize = pointsSize
 						)
 					}
@@ -779,7 +767,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 			// Main container of the UI of the app
 			Column(
 				modifier = Modifier
-					//.fillMaxSize()
 					.padding(10.dp),
 				verticalArrangement = Arrangement.Top,
 				horizontalAlignment = Alignment.CenterHorizontally
@@ -935,7 +922,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 														...
 														"
 													(lines containing "concept: value" pairs, where concept is a food or other general item name and value is a double representing the confidence/probability of the recognized concept)
-													 */
+												*/
 												_imageRecognitionResults = mutableListOf()
 												val concepts = response.split("\n")
 												for (concept in concepts) {
@@ -1171,309 +1158,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 	
 }
 
-/*
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun DrawMainUI_OLD(
-	context: Context,
-	//measuring: Boolean,
-	//current_items: MutableList<String>,
-	//current_weights: MutableList<String>,
-	//measurementsArray: Array<MutableList<Triple<Double, Double, Double>>>,
-	//requestResponse: String,
-	//currentFoodName : String,
-	//currentFoodWeight : String
-) {
-	// Variables
-	val current_items = remember { mutableListOf(*_foodItems.toTypedArray()) }
-	val current_weights = remember { mutableListOf( *_itemWeights.toTypedArray()) }
-	@Composable
-	fun DrawItemCard(
-		context: Context,
-		itemIndex: Int
-	) {
-		val itemName = remember { mutableStateOf(_foodItems[itemIndex]) }
-		val itemWeight = remember { mutableStateOf(_itemWeights[itemIndex]) }
-		val textInputPadding = 7.dp
-		Card(
-			modifier = Modifier
-				//.size(200.dp, 200.dp)
-				.fillMaxWidth()
-				.padding(10.dp),
-			border = BorderStroke(2.dp, Color(ContextCompat.getColor(context, R.color.main_color))),
-			colors = CardDefaults.cardColors(
-				containerColor = Color.White,
-				contentColor = Color.Black
-			),
-			shape = RoundedCornerShape(10.dp),
-			elevation = CardDefaults.cardElevation(
-				defaultElevation = 0.dp,
-				pressedElevation = 0.dp
-			)
-		) {
-			Column(
-				modifier = Modifier.padding(10.dp),
-				verticalArrangement = Arrangement.spacedBy(0.dp),
-				horizontalAlignment = Alignment.CenterHorizontally
-			) {
-				// First row with item name
-				Row(
-					modifier = Modifier
-						.fillMaxWidth()
-						.padding(5.dp),
-					verticalAlignment = Alignment.CenterVertically,
-					horizontalArrangement = Arrangement.spacedBy(0.dp)
-				) {
-					// Show the food name and weight as editable text fields (outlined text fields
-					OutlinedTextField(
-						value = itemName.value,
-						placeholder = { Text("Food Name") },
-						onValueChange = {
-							// Update the food name
-							_foodItems[itemIndex] = it
-							// Update the food name in the UI
-							itemName.value = it
-						},
-						modifier = Modifier
-							.size(160.dp, 52.dp)
-							.padding(0.dp),
-						shape = RoundedCornerShape(5.dp, 0.dp, 0.dp, 5.dp),
-						singleLine = true,
-						colors = OutlinedTextFieldDefaults.colors(
-							//focusedBorderColor = Color(ContextCompat.getColor(context, R.color.main_color_light)),
-							//unfocusedBorderColor = Color(ContextCompat.getColor(context, R.color.main_color)),
-							focusedBorderColor = Color.Gray,
-							unfocusedBorderColor = Color.Gray,
-						)
-					)
-					// Show a button to start the weight measurement process
-					Button(
-						border = BorderStroke(3.dp, Color.Gray),
-						colors = ButtonDefaults.buttonColors(
-							containerColor = Color.Gray,
-							contentColor = Color.White
-						),
-						modifier = Modifier
-							//.fillMaxWidth()
-							.size(80.dp, 52.dp)
-							.padding(0.dp),
-						shape = RoundedCornerShape(0.dp, textInputPadding, textInputPadding, 0.dp),
-						enabled = !_measuring,
-						contentPadding = PaddingValues(0.dp),
-						onClick = {
-							// TO DO
-						}
-					) {
-						Text(
-							text = "PHOTO",
-							modifier = Modifier
-								.fillMaxWidth()
-								.padding(4.dp, 4.dp, 5.dp, 4.dp),
-							textAlign = TextAlign.Center,
-							//fontWeight = FontWeight.Bold,
-							fontSize = 15.sp
-						
-						)
-					}
-				}
-				// Second row with item weight
-				Row (
-					modifier = Modifier
-						.fillMaxWidth()
-						.padding(5.dp),
-					verticalAlignment = Alignment.CenterVertically,
-					horizontalArrangement = Arrangement.spacedBy(0.dp)
-				) {
-					// Show the food weight as an editable text field (outlined text field)
-					OutlinedTextField(
-						value = itemWeight.value,
-						placeholder = { Text("Weight (grams)") },
-						onValueChange = {
-							// Update the food weight
-							_itemWeights[itemIndex] = it
-							// Update the food weight in the UI
-							itemWeight.value = it
-						},
-						modifier = Modifier
-							//.fillMaxWidth()
-							.size(160.dp, 52.dp)
-							.padding(0.dp),
-						shape = RoundedCornerShape(textInputPadding, 0.dp, 0.dp, textInputPadding),
-						singleLine = true,
-						colors = OutlinedTextFieldDefaults.colors(
-							//focusedBorderColor = Color(ContextCompat.getColor(context, R.color.main_color_light)),
-							//unfocusedBorderColor = Color(ContextCompat.getColor(context, R.color.main_color)),
-							focusedBorderColor = Color.Gray,
-							unfocusedBorderColor = Color.Gray,
-						)
-					)
-					// Show a button to start the weight measurement process
-					Button(
-						border = BorderStroke(3.dp, Color.Gray),
-						colors = ButtonDefaults.buttonColors(
-							containerColor = Color.Gray,
-							contentColor = Color.White
-						),
-						modifier = Modifier
-							//.fillMaxWidth()
-							.size(80.dp, 52.dp)
-							.padding(0.dp),
-						shape = RoundedCornerShape(0.dp, textInputPadding, textInputPadding, 0.dp),
-						enabled = !_measuring,
-						contentPadding = PaddingValues(0.dp),
-						onClick = {
-							// TO DO
-						}
-					) {
-						Text(
-							text = "SCALE",
-							modifier = Modifier
-								.fillMaxWidth()
-								.padding(4.dp, 4.dp, 5.dp, 4.dp),
-							textAlign = TextAlign.Center,
-							//fontWeight = FontWeight.Bold,
-							fontSize = 15.sp
-						)
-					}
-				}
-				
-			}
-		}
-	}
-	// Main container of the UI of the app
-	Column (
-		modifier = Modifier
-			.fillMaxSize()
-			.padding(15.dp, 45.dp, 15.dp, 45.dp),
-	) {
-		// Main title card
-		Card (
-			modifier = Modifier
-				.fillMaxWidth()
-				.padding(10.dp)
-			,
-			colors = CardDefaults.cardColors(
-				containerColor = Color.White,
-				contentColor = Color.Black
-			),
-			// Add elevation to the card (to show a shadow)
-			elevation = CardDefaults.cardElevation(
-				defaultElevation = 10.dp,
-				pressedElevation = 10.dp
-			)
-		) {
-			Column(
-				modifier =
-				Modifier
-					.padding(10.dp)
-					.fillMaxWidth(),
-				verticalArrangement = Arrangement.Center,
-				horizontalAlignment = Alignment.CenterHorizontally
-			) {
-				// Title text
-				Text(
-					modifier = Modifier.padding(3.dp),
-					text = "Food Pal",
-					fontSize = 24.sp,
-					fontWeight = FontWeight.Bold,
-					textAlign = TextAlign.Center,
-					color = Color(ContextCompat.getColor(context, R.color.main_color))
-				)
-				// Subtitle text
-				Text(
-					modifier = Modifier.padding(3.dp),
-					text = "Your personal food assistant",
-					fontSize = 16.sp,
-					fontWeight = FontWeight.Normal,
-					textAlign = TextAlign.Center,
-					color = Color(ContextCompat.getColor(context, R.color.main_color))
-				)
-			}
-		}
-		// Card with the list of food items
-		Card (
-			modifier = Modifier
-				.fillMaxSize()
-				.padding(10.dp),
-			colors = CardDefaults.cardColors(
-				containerColor = Color.White,
-				contentColor = Color.Black
-			),
-			// Add elevation to the card (to show a shadow)
-			elevation = CardDefaults.cardElevation(
-				defaultElevation = 10.dp,
-				pressedElevation = 10.dp
-			)
-		) {
-			Column(
-				modifier = Modifier.padding(10.dp),
-				verticalArrangement = Arrangement.spacedBy(2.dp),
-				horizontalAlignment = Alignment.CenterHorizontally
-			) {
-				// Title text
-				Text(
-					modifier = Modifier.padding(3.dp),
-					text = "Food Items",
-					fontSize = 18.sp,
-					fontWeight = FontWeight.Bold,
-					textAlign = TextAlign.Center,
-					color = Color(ContextCompat.getColor(context, R.color.main_color))
-				)
-				// Show the list of food items in a scrollable LazyColumn element
-				LazyColumn(
-					modifier = Modifier
-						.padding(2.dp)
-						.fillMaxWidth()
-						.size(320.dp, 400.dp),
-					verticalArrangement = Arrangement.spacedBy(0.dp),
-					horizontalAlignment = Alignment.CenterHorizontally,
-				) {
-					items(current_items.size) { index ->
-						DrawItemCard(
-							context,
-							index
-							//current_items[index],
-							//current_weights[index]
-						)
-					}
-				}
-				// Show a button to add a new food item
-				Button(
-					//shape = RoundedCornerShape(1000.dp),
-					border = BorderStroke(3.dp, Color.Gray),
-					colors = ButtonDefaults.buttonColors(
-						containerColor = Color.Gray,
-						contentColor = Color.White
-					),
-					enabled = !measuring,
-					onClick = {
-						// Add a new food item to the list
-						current_items.add("")
-						current_weights.add("")
-						_foodItems.add("")
-						_itemWeights.add("")
-					}
-				) {
-					Text(
-						text = "Add Food Item",
-						modifier = Modifier.padding(4.dp)
-					)
-				}
-				// Show a debug text with the current food names and weights
-				Text(
-					text = "Current Food Items: ${current_items.joinToString()}\nCurrent Food Weights: ${current_weights.joinToString()}",
-					fontWeight = FontWeight.Normal,
-					fontSize = 8.sp,
-					color = Color.Gray
-				)
-				
-			}
-		}
-	}
-	
-}
-*/
-
 @Composable
 fun CustomButton(
 	text: String,
@@ -1488,8 +1172,6 @@ fun CustomButton(
 	enabled: Boolean = true,
 	fontSize : TextUnit = 14.sp
 ) {
-	//val colorCode = context.getColor(R.color.main_color)
-	//val color = Color(colorCode)
 	Button(
 		onClick = onClick,
 		modifier =
@@ -1544,7 +1226,6 @@ fun DrawMainUI(
 	context: Context,
 	_ingredients: MutableList<String>,
 	_weights: MutableList<String>,
-	//sensorDataMeasurements : MutableList<SensorData>
 ) {
 	
 	// State of the UI and other flags
@@ -1560,8 +1241,6 @@ fun DrawMainUI(
 	var rand = remember { mutableStateOf(0) }
 	
 	// Local state for ingredients and weights
-	//val ingredients = remember { mutableStateListOf("Apple", "Banana", "Orange") }
-	//val weights = remember { mutableStateListOf("100", "200", "300") }
 	val ingredients = remember { mutableStateListOf(*_ingredients.toTypedArray()) }
 	val weights = remember { mutableStateListOf(*_weights.toTypedArray()) }
 	
@@ -1584,14 +1263,6 @@ fun DrawMainUI(
 	
 	// Scale sensitivity
 	val scaleSensitivity = remember { mutableStateOf( 1500f) }
-	
-	// State to hold the result of CheckCanStartWeightMeasurement
-	//val canStartMeasuring = remember { mutableStateOf(Pair(false, "")) }
-	//// Update the state whenever the sensor data measurements change
-	//LaunchedEffect(sensorDataMeasurements) {
-	//	canStartMeasuring.value = CheckCanStartWeightMeasurement(sensorDataMeasurements)
-	//	debugText.value = canStartMeasuring.value.second
-	//}
 	
 	@Composable
 	fun CustomInputField(
@@ -1661,7 +1332,6 @@ fun DrawMainUI(
 				//.size(200.dp, 200.dp)
 				.fillMaxWidth()
 				.padding(5.dp, 0.dp),
-			//border = BorderStroke(2.dp, Color(ContextCompat.getColor(context, R.color.main_color))),
 			colors = CardDefaults.cardColors(
 				containerColor = Color.White,
 				contentColor = Color.Black
@@ -1975,14 +1645,6 @@ fun DrawMainUI(
 		followedUserIndex : Int,
 		userInfosString : String
 	) {
-		// For now, simply display text with the user infos
-		//Log.d("UserInfos", "$userInfosString")
-		//Text(
-		//	text = userInfosString,
-		//	fontSize = 10.sp,
-		//	fontWeight = FontWeight.Normal,
-		//	color = Color.Black
-		//)
 		// Get the user infos JSON object
 		var userInfosJSON = JSONObject()
 		val aggregatedInfos = JSONObject()
@@ -2414,22 +2076,6 @@ fun DrawMainUI(
 							)
 						}
 					}
-					//CustomButton(
-					//	text = "CLOSE",
-					//	filled = false,
-					//	Color.White,
-					//	Color.White,
-					//	//Color(ContextCompat.getColor(context, R.color.main_color)),
-					//	buttonsShape,
-					//	fillWidth = true,
-					//	sizeX = 320.dp,
-					//	onClick = {
-					//		// Close the overlay
-					//		showLoadingScreen.value = false
-					//		currentUIState.value = UIStates.Main
-					//	}
-					//)
-					
 					// Row with the "saved" text
 					if (sentIngredientsToServerText.value.isNotBlank()) {
 						Text(
@@ -2642,9 +2288,6 @@ fun DrawMainUI(
 							modifier = Modifier
 								.size(52.dp)
 								.padding(0.dp),
-							//.background(Color(ContextCompat.getColor(context, R.color.main_color))),
-							//.wrapContentHeight(align = Alignment.CenterVertically),
-							//elevation = 0.dp,
 							shape = RoundedCornerShape(1000.dp),
 							colors = CardDefaults.cardColors(
 								containerColor = Color.LightGray,
@@ -2965,17 +2608,6 @@ fun DrawMainUI(
 											ingredientNutritionalInfos.add(Triple(nutrient, newValue, unit))
 										}
 									}
-									//
-									//// Find the index of the nutrient in the list
-									//val index = ingredientNutritionalInfos.indexOfFirst { it.first == nutrient }
-									//if (index >= 0) {
-									//	// Update the value for the nutrient
-									//	val oldValue = ingredientNutritionalInfos[index].second
-									//	ingredientNutritionalInfos[index] = Triple(nutrient, oldValue + value, unit)
-									//} else {
-									//	// Add the nutrient to the list
-									//	ingredientNutritionalInfos.add(ingredientInfos)
-									//}
 								}
 								// Update the UI state to show the infos screen
 								currentUIState.value = UIStates.Infos
@@ -3107,13 +2739,6 @@ fun DrawMainUI(
 							horizontalAlignment = Alignment.Start
 						) {
 							if (!showDebugText.value) {
-								//Text(
-								//	modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 3.dp),
-								//	text = "Instructions:",
-								//	fontWeight = FontWeight.Bold,
-								//	fontSize = 18.sp,
-								//	color = Color(ContextCompat.getColor(context, R.color.main_color))
-								//)
 								for (i in 0 until textLines.size) {
 									val line = textLines[i]
 									val parts = line.split(") ")
@@ -3269,34 +2894,6 @@ fun DrawMainUI(
 						fillWidth = false,
 						sizeX = footerButtonsWidth,
 						onClick = {
-							/*
-							// For debug, send a request to the server, directly
-							CoroutineScope(Dispatchers.Main).launch {
-								// Get the last 3 measurements
-								var sensorDataMeasurements = sensorDataMeasurementsRaw.takeLast(3).toMutableList()
-								// Send the data to the server to get the weight
-								val weight = SendWeightEstimationRequest(volleyRequestQueue, sensorDataMeasurements)
-								// Check if the weight was actual retrieved
-								if (weight.isBlank() || weight == "0") {
-									// Measurement failed
-									measuredSuccessfully.value = false
-									// Update the debug text with the error
-									debugText.value = "Measurement failed!"
-								} else {
-									// Update the predicted weight
-									predictedWeight.value = weight.toDouble()
-									// Update the debug text with the weight
-									debugText.value = weight
-								}
-								// Hide the loading screen
-								showLoadingScreen.value = false
-								// Go to the weight results screen
-								currentUIState.value = UIStates.ScaleResults
-								// Return
-								return@launch
-							}
-							*/
-							///*
 							// Start the scale (notify that we are trying to measure the scale)
 							tryingToMeasureScale.value = true
 							isTryingToMeasure = true
@@ -3347,7 +2944,6 @@ fun DrawMainUI(
 								// Update the value with the random value for testing
 								if (scaleSensitivity.value <= 1100) predictedWeight.value = abs(scaleSensitivity.value.toInt() + rand.value).toLong()
 							}
-							//*/
 						},
 						enabled = !tryingToMeasureScale.value
 					)
@@ -3545,28 +3141,6 @@ fun DrawMainUI(
 							textAlign = TextAlign.Center,
 							color = Color(ContextCompat.getColor(context, R.color.main_color))
 						)
-						// Subtitle text
-						//val scaleResultsText = "${predictedWeight.value}g"
-						//Row(
-						//	modifier = Modifier
-						//		.fillMaxWidth()
-						//		.padding(5.dp, 15.dp),
-						//	verticalAlignment = Alignment.CenterVertically,
-						//	horizontalArrangement = Arrangement.SpaceBetween
-						//) {
-						//	Text(
-						//		text = "Measured weight:",
-						//		fontWeight = FontWeight.Bold,
-						//		fontSize = 18.sp,
-						//		color = Color(ContextCompat.getColor(context, R.color.main_color))
-						//	)
-						//	Text(
-						//		text = scaleResultsText,
-						//		fontWeight = FontWeight.Normal,
-						//		fontSize = 18.sp,
-						//		color = Color(ContextCompat.getColor(context, R.color.main_color))
-						//	)
-						//}
 						// Email input field
 						CustomInputField(
 							value = userEmail.value,
@@ -3762,15 +3336,6 @@ fun DrawMainUI(
 						horizontalAlignment = Alignment.CenterHorizontally,
 						
 						) {
-						// Title text
-						//Text(
-						//	modifier = Modifier.padding(5.dp),
-						//	text = "User Profile",
-						//	fontSize = 24.sp,
-						//	fontWeight = FontWeight.Bold,
-						//	textAlign = TextAlign.Center,
-						//	color = Color(ContextCompat.getColor(context, R.color.main_color))
-						//)
 						// Show a row with the user profile icon and username
 						Row(
 							modifier = Modifier
@@ -3784,9 +3349,6 @@ fun DrawMainUI(
 								modifier = Modifier
 									.size(52.dp)
 									.padding(0.dp),
-								//.background(Color(ContextCompat.getColor(context, R.color.main_color))),
-								//.wrapContentHeight(align = Alignment.CenterVertically),
-								//elevation = 0.dp,
 								shape = RoundedCornerShape(1000.dp),
 								colors = CardDefaults.cardColors(
 									containerColor = Color.LightGray,
@@ -3997,79 +3559,6 @@ fun DrawMainUI(
 									}
 								}
 							)
-							
-							/*
-							// Input field to add a new user
-							CustomInputField(
-								value = newFollowedUser.value,
-								onValueChange = { newValue ->
-									newFollowedUser.value = newValue
-									userErrorInfos.value = ""
-								},
-								label = "Follow user",
-								sizeX = 180.dp,
-								fillWidth = false
-							)
-							// Button to add the new user
-							CustomButton(
-								text = "FOLLOW",
-								filled = true,
-								Color(ContextCompat.getColor(context, R.color.main_color)),
-								Color.White,
-								buttonsShape,
-								fillWidth = false,
-								sizeX = 110.dp,
-								onClick = {
-									// Send a request to the server to check if the user exists and get its infos string (as a JSON string)
-									CoroutineScope(Dispatchers.Main).launch {
-										// Show the loading screen
-										showLoadingScreen.value = true
-										// Send the request to the server
-										val userInfosResult = SendGetUserInfosRequest(volleyRequestQueue, newFollowedUser.value, userEmail.value)
-										// Hide the loading screen
-										showLoadingScreen.value = false
-										// Check if the request succeeded
-										var userInfos : JSONObject = JSONObject()
-										var userFound = false
-										if (userInfosResult.length() > 0) {
-											try {
-												userInfos = userInfosResult.getJSONObject("infos")
-												userFound = true
-											} catch (e: JSONException) {
-												userFound = false
-											}
-										}
-										// Check if the user exists
-										if (userFound) {
-											// Check if the user is the currently logged in user
-											if (userInfos.getString("username") == profileName) {
-												// Show an error message for the user
-												userErrorInfos.value = "You can't follow yourself!"
-												// Show an error message
-												debugText.value = "You can't follow yourself!"
-												return@launch
-											}
-											// Add the new user to the list of followed users
-											followedUsers.add(userInfos.toString())
-											// Reset the input field
-											newFollowedUser.value = ""
-											// Reset the error messages
-											userErrorInfos.value = ""
-											// Send a request to the server to update the list of followed users (without the need to get a response after the update)
-											CoroutineScope(Dispatchers.Main).launch {
-												// Send the request to the server
-												SendUpdateFollowedUsersRequest(volleyRequestQueue, userEmail.value, followedUsers)
-											}
-										} else {
-											// Show an error message for the user
-											userErrorInfos.value = "User '${newFollowedUser.value}' not found!"
-											// Show an error message
-											debugText.value = "User not found!"
-										}
-									}
-								}
-							)
-							*/
 						}
 						// error text for users (if any)
 						if (userErrorInfos.value.isNotBlank()) {
@@ -4329,7 +3818,6 @@ suspend fun SendLoginRequest(
 	// Create the JSON object to send
 	val jsonBody = JSONObject()
 	jsonBody.put("email", userEmail)
-	//Log.d("JSON body", jsonBody.toString(4))
 	
 	// Create a CompletableDeferred to wait for the response
 	val deferred = CompletableDeferred<String>()
@@ -4375,7 +3863,6 @@ suspend fun SendVerifyOTPRequest(
 	val jsonBody = JSONObject()
 	jsonBody.put("email", userEmail)
 	jsonBody.put("otp", otp)
-	//Log.d("JSON body", jsonBody.toString(4))
 	
 	// Create a CompletableDeferred to wait for the response
 	val deferred = CompletableDeferred<JSONObject>()
@@ -4408,7 +3895,6 @@ suspend fun SendVerifyOTPRequest(
 			// Log the error
 			Log.e("ERROR", "Error in OTP verification request: $error")
 			// Complete the deferred with an empty string
-			//deferred.complete("ERROR: $error")
 			deferred.complete(JSONObject())
 		}
 	)
@@ -4592,16 +4078,6 @@ fun ParsePhotoScanAPIResponse(response: String, apiType: String) : List<Pair<Str
 				)
 			)
 		}
-		//// Store the first match in the selected food
-		//if (imageRecognitionResults.isNotEmpty()) {
-		//	_selectedFood = _imageRecognitionResults[0].first
-		//} else {
-		//	_selectedFood = "unknown"
-		//	Log.d(
-		//		"WARNING: no concepts found in response:\n",
-		//		response
-		//	)
-		//}
 	} else if (apiType == "foodvisor") {
 		/*
 			Foodvisor response format:
@@ -4664,35 +4140,6 @@ fun ParsePhotoScanAPIResponse(response: String, apiType: String) : List<Pair<Str
 				// Add the food name and confidence to the list
 				imageRecognitionResults.add(Pair(foodName, confidence))
 			}
-			/*
-			// Get the first analysis response item
-			val firstItem = items.getJSONObject(0)
-			// Food name is found in firstItem["food"]["food_info"]["display_name"]
-			// NOTE: the "food" could either be a JSON object or a JSON array
-			// 	- if it is an array, the first item is the one we are looking for
-			// 	- if it is an object, the object itself is the one we are looking for
-			// Check if the "food" is an array or an object
-			val food = firstItem.get("food")
-			if (food is JSONArray) {
-				// Get the first item in the array
-				val firstFood = food.getJSONObject(0)
-				// Get the food name
-				_selectedFood =
-					firstFood.getJSONObject("food_info")
-						.getString("display_name")
-			} else if (food is JSONObject) {
-				// Get the food name
-				_selectedFood =
-					food.getJSONObject("food_info")
-						.getString("display_name")
-			} else {
-				_selectedFood = "unknown"
-				Log.d(
-					"WARNING: unknown 'food' type in response: ",
-					food.toString()
-				)
-			}
-			*/
 		} else {
 			Log.d("WARNING: no items found in 'foodvisor' response:\n", response)
 		}
@@ -4719,8 +4166,6 @@ fun ParseFoodNutritionalValuesAPIResponse(response: String) : List<Triple<String
 		Log.d("ERROR: error parsing JSON response", response)
 		return nutritionalInfos.toList()
 	}
-	// Log the JSON response indented for debugging
-	//Log.d("JSON response", jsonResponse.toString(4))
 	// Get the nutrients object
 	val nutrients = jsonResponse.getJSONObject("nutrition").getJSONArray("nutrients")
 	// Iterate over the nutrients
@@ -5063,11 +4508,9 @@ suspend fun SendImageRecognitionAPIRequest(
 			// Add Authorization header
 			val headers = mapOf("Authorization" to authStringToUse)
 			// Add parameters and file part ("image" and "scopes" with "multiple_items" in the scopes, as an array)
-			//val params = mapOf("param1" to "value1", "param2" to "value2")
-			//val filePart = Pair("image", byteData)
 			val params = mapOf("scopes" to "[\"multiple_items\"]")
 			val filePart = Pair("image", byteData)
-			
+			// Create the MultipartRequest
 			val multipartRequest = MultipartRequest(
 				urlToUse,
 				headers,
@@ -5195,12 +4638,8 @@ fun CameraPreview(onImageCaptured: (File) -> Unit, onClose: () -> Unit) {
 		AndroidView(
 			// Use the same aspect ratio as the camera preview
 			modifier = Modifier
-				//.fillMaxSize()
-				//.aspectRatio(4f / 3f)
 				.padding(10.dp)
-				//.background(Color.Black)
-				.clip(RoundedCornerShape(10.dp))
-			,
+				.clip(RoundedCornerShape(10.dp)),
 			factory = { ctx ->
 				val previewView = PreviewView(ctx)
 				val preview = Preview.Builder().build().also {
@@ -5226,20 +4665,6 @@ fun CameraPreview(onImageCaptured: (File) -> Unit, onClose: () -> Unit) {
 			modifier = Modifier.padding(0.dp),
 			horizontalArrangement = Arrangement.spacedBy(10.dp)
 		) {
-			// Show exit button (close without capturing)
-			//Button(
-			//	modifier = Modifier.padding(4.dp),
-			//	colors = ButtonDefaults.buttonColors(
-			//		containerColor = Color.Gray,
-			//		contentColor = Color.White
-			//	),
-			//	onClick = {
-			//		onClose()
-			//	},
-			//	content = {
-			//		Text("Exit")
-			//	}
-			//)
 			CustomButton(
 				text = "CANCEL",
 				filled = false,
@@ -5253,42 +4678,6 @@ fun CameraPreview(onImageCaptured: (File) -> Unit, onClose: () -> Unit) {
 					onClose()
 				}
 			)
-			// Show capture button
-			//Button(
-			//	modifier = Modifier.padding(4.dp),
-			//	colors = ButtonDefaults.buttonColors(
-			//		containerColor = Color.Gray,
-			//		contentColor = Color.White
-			//	),
-			//	onClick = {
-			//		val photoFile = File(
-			//			context.externalMediaDirs.first(),
-			//			"${System.currentTimeMillis()}.jpg"
-			//		)
-			//
-			//		val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
-			//		imageCapture.takePicture(
-			//			outputOptions, ContextCompat.getMainExecutor(context),
-			//			object : ImageCapture.OnImageSavedCallback {
-			//				override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-			//					onImageCaptured(photoFile)
-			//					onClose() // Close the camera view
-			//				}
-			//
-			//				override fun onError(exception: ImageCaptureException) {
-			//					Log.e(
-			//						"CameraPreview",
-			//						"Photo capture failed: ${exception.message}",
-			//						exception
-			//					)
-			//				}
-			//			}
-			//		)
-			//	},
-			//	content = {
-			//		Text("Capture")
-			//	}
-			//)
 			CustomButton(
 				text = "CAPTURE",
 				filled = true,
@@ -5397,10 +4786,6 @@ suspend fun SendFoodNutritionalValueAPIRequest(
 							deferred.complete("Request failed: ${response.getString("message")}")
 						}
 						// Return a formatted string with the results
-						//val name = response.getString("name")
-						//val macronutriens = response.getJSONObject("nutrition").getJSONObject("caloricBreakdown").toString()
-						//val nutriens = response.getJSONObject("nutrition").getJSONArray("nutrients").toString()
-						//deferred.complete("$name: $id\n$macronutriens\n$nutriens")
 						// Simply return the whole response's JSON object as a string
 						deferred.complete(response.toString())
 					} ?: deferred.complete("Request failed: Nutritional information not found")

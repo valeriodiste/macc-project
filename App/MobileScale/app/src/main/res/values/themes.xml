@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MobileScale" parent="android:Theme.Material.Light.NoActionBar">
+<!--    <style name="Theme.MobileScale" parent="android:Theme.DeviceDefault">-->
+        <item name="colorPrimary">@color/main_color</item>
+<!--        <item name="colorPrimaryVariant">@color/main_color_dark</item>-->
+<!--        <item name="colorOnPrimary">@color/white</item>-->
+<!--        <item name="colorSecondary">@color/main_color_light</item>-->
+<!--        <item name="colorSecondaryVariant">@color/main_color</item>-->
+<!--        <item name="colorOnSecondary">@color/black</item>-->
+        <item name="android:windowBackground">@color/main_color</item>
+        <item name="android:statusBarColor">#0091DE84</item>
+        <item name="android:navigationBarColor">#0091DE84</item>
+    </style>
+</resources>

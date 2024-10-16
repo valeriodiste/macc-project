@@ -13,10 +13,6 @@ from fnn import FNN, ModelData
 import smtplib
 from email.mime.text import MIMEText
 
-# General parameters
-# REFRESH_DATA = True
-# WANDB_API_KEY = "2ba6d81dbfe138d5c7fe13aeeeaac296cb88d274"
-
 # Model data parameters
 NORMALIZE_SENSOR_DATA = True
 NORMALIZATION_RANGE = [-1, 1]
@@ -204,10 +200,13 @@ def verify():
 		otp = data["otp"]
 		# Verify the OTP
 		otp_file_path = "./mysite/otp.json"
+		users_file_path = "./mysite/users.json"
 		otp_file = open(otp_file_path, "r")
 		otp_data = json.load(otp_file)
 		otp_file.close()
 		verified = False
+		user_infos = []
+		followed = []
 		if email in otp_data:
 			if otp_data[email] == str(otp):
 				verified = True
@@ -216,12 +215,147 @@ def verify():
 				otp_file = open(otp_file_path, "w")
 				json.dump(otp_data, otp_file)
 				otp_file.close()
+				# Add the user in the users file (if it is not already present)
+				users_file = open(users_file_path, "r")
+				users_data = json.load(users_file)
+				users_file.close()
+				# Generate a username from the email
+				username = email.split("@")[0]
+				if username not in users_data:
+					# Check if a user with the same username but different email is already present (in this case, append a number to the username)
+					# 	NOTE: first user will always be "username", second user will be "username1", third user will be "username2", etc.
+					username_base = username
+					username_number = 1
+					while username in users_data:
+						if users_data[username]["email"] == email:
+							break
+						username = username_base + str(username_number)
+						username_number += 1
+					# Add the user to the users data
+					users_data[username] = {"email": email, "username": username, "infos": [], "followed": []}
+					users_file = open(users_file_path, "w")
+					json.dump(users_data, users_file)
+					users_file.close()
+				# Get the user infos
+				user_infos = users_data[username]["infos"]
+				followed = users_data[username]["followed"]
 		# Return the response
 		if not verified:
 			return jsonify({"verified": False, "error": "Invalid OTP"})
 		else:
-			return jsonify({"verified": verified})
+			return jsonify({"verified": True, "username": username, "infos": user_infos, "followed": followed})
 	except Exception as e:
 		print("An error occurred:\n" + str(e))
 		return jsonify({"verified": False, "error": str(e)})
 
+# Route to return results about saved users in the server (as a JSONified string)
+@app.route('/user_infos', methods=['GET', 'POST'])
+def get_user_infos():
+	try:
+		# Get the data (data is sent through a GET request as a JSON object request with a certain JSON body, containing the sensor data)
+		data = request.get_json()
+		# Get the "email" field (only the email field is sent to then generate a one time password sent via email to the user)
+		username = data["username"]
+		# Load the users data
+		users_file_path = "./mysite/users.json"
+		users_file = open(users_file_path, "r")
+		users_data = json.load(users_file)
+		users_file.close()
+		# Check if the URL parameters contain a field "email"
+		authenticated = False
+		if "email" in data:
+			auth_email = data["email"]
+			auth_username = auth_email.split("@")[0]
+			if auth_username in users_data:
+				if users_data[auth_username]["email"] == auth_email:
+					authenticated = True
+		# Check if the username is in the users
+		if username not in users_data:
+			return jsonify({"found": False, "error": "Unknown username"})
+		# Get the user infos
+		username = users_data[username]["username"]
+		user_infos = users_data[username]["infos"]
+		followed = [] if not authenticated else users_data[username]["followed"]
+		# Return the response
+		return jsonify({"found": True, "result": {"username": username, "infos": user_infos, "followed": followed}})
+	except Exception as e:
+		print("An error occurred:\n" + str(e))
+		return jsonify({"found": False, "error": str(e)})
+
+# Route to save the user infos
+@app.route('/save_user_infos', methods=['POST'])
+def save_infos():
+	try:
+		# Get the data (data is sent through a GET request as a JSON object request with a certain JSON body, containing the sensor data)
+		data = request.get_json()
+		# Get the "email" field (only the email field is sent to then generate a one time password sent via email to the user)
+		email = data["email"]
+		infos = data["infos"]
+		username = email.split("@")[0]
+		# Load the users data
+		users_file_path = "./mysite/users.json"
+		users_file = open(users_file_path, "r")
+		users_data = json.load(users_file)
+		users_file.close()
+		# Check if the username is in the users
+		if username not in users_data:
+			return jsonify({"saved": False, "error": "Unknown user"})
+		# Find the real username
+		for user in users_data:
+			if users_data[user]["email"] == email:
+				username = user
+				break
+		# Get the current user infos (list of json objects, hence dictionaries)
+		current_infos = users_data[username]["infos"]
+		# Add the new infos to the list
+		current_infos.append(infos)
+		# Save the user infos
+		users_data[username]["infos"] = current_infos
+		# Save the users data
+		users_file = open(users_file_path, "w")
+		json.dump(users_data, users_file)
+		users_file.close()
+		# Return the response
+		return jsonify({"saved": True, "infos": current_infos})
+	except Exception as e:
+		print("An error occurred:\n" + str(e))
+		return jsonify({"saved": False, "error": str(e)})
+	
+# Route to update the followed users
+@app.route('/update_followed', methods=['POST'])
+def update_followed():
+	try:
+		# Get the data (data is sent through a GET request as a JSON object request with a certain JSON body, containing the sensor data)
+		data = request.get_json()
+		# Get the "email" field (only the email field is sent to then generate a one time password sent via email to the user)
+		email = data["email"]
+		followed = data["followed"]
+		username = email.split("@")[0]
+		# Load the users data
+		users_file_path = "./mysite/users.json"
+		users_file = open(users_file_path, "r")
+		users_data = json.load(users_file)
+		users_file.close()
+		# Check if the username is in the users
+		if username not in users_data:
+			return jsonify({"updated": False, "error": "Unknown user"})
+		# Find the real username
+		for user in users_data:
+			if users_data[user]["email"] == email:
+				username = user
+				break
+		# Get the current followed users
+		current_followed = users_data[username]["followed"]
+		# Update the followed users
+		current_followed = followed
+		# Save the followed users
+		users_data[username]["followed"] = current_followed
+		# Save the users data
+		users_file = open(users_file_path, "w")
+		json.dump(users_data, users_file)
+		users_file.close()
+		# Return the response
+		return jsonify({"updated": True})
+	except Exception as e:
+		print("An error occurred:\n" + str(e))
+		return jsonify({"updated": False, "error": str(e)})

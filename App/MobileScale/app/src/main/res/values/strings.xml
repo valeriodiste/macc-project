@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MobileScale</string>
+    <string name="shared_preferences_file_key">MobileScalePrefs</string>
+</resources>

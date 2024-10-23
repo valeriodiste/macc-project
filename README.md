@@ -1,4 +1,4 @@
-# macc-project
+# FoodPal - MACC Project
 
 Main repository for the Mobile Applications and Cloud Computing course project (2023-2024, Sapienza University of Rome).
 
